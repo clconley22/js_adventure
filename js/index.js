@@ -1,5 +1,5 @@
 import * as controls from './controls';
-import {setGame, messageBox} from './gamespace';
+import {setGame, messageBox, newMessage} from './gamespace';
 import * as levels from './levels';
 import * as planet from './planet';
 import * as spaceship from './spaceship';
@@ -24,9 +24,19 @@ document.dispatchEvent(setGame);
  *  'ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft'
  *
  */
-const arrowPressed = (key) => {
-    /* Write your code in here */
-};
+
+ const arrowPressed = (key) => {
+   if (key == 'ArrowUp'){
+      spaceship.moveUp();
+   } else if (key == 'ArrowLeft'){
+      spaceship.moveLeft();
+   } else if (key == 'ArrowDown'){
+      spaceship.moveDown()
+   } else if (key == 'ArrowRight'){
+      spaceship.moveRight();
+   }
+ };
+
 
 /*
  * Problem 2 - Next Level isn't incrementing levels
@@ -49,8 +59,20 @@ const arrowPressed = (key) => {
  *      GAME_OVER - a const, that is the level that represents completion of game
  *
  */
+messageBox.innerHTML = ('Level 1')
+
  const nextLevelBtnPressed = () => {
-     /* Write your code in here */
+   var CurrentLevel = levels.getCurrentLevel();
+    var updatedLevel = CurrentLevel + 1
+    if ((spaceship.isLanded()==true) && (CurrentLevel < levels.GAME_OVER)) {
+      console.log('updating message to: ' + 'Level ' + updatedLevel);
+      getMessage(CurrentLevel);
+      levels.setCurrentLevel(updatedLevel)
+      getMessage(CurrentLevel);
+    } else if (CurrentLevel >= levels.HIGHEST_LEVEL){
+      console.log('updating message to: Game Over')
+      messageBox.innerHTML = ('You Win');
+    }
  };
 
  /*
@@ -85,5 +107,22 @@ const arrowPressed = (key) => {
   */
 
 /* Write your code here */
+const getMessage = (level) => {
+  var CurrentLevel = levels.getCurrentLevel();
+  switch(CurrentLevel){
+    case 1:
+      messageBox.innerHTML = 'Level 1';
+        break;
+    case 2:
+      messageBox.innerHTML = 'Level 2';
+        break;
+    case 3:
+      messageBox.innerHTML = 'Level 3';
+        break;
+    case 4:
+      messageBox.innerHTML = "Game Over";
+        break;
+  }
+}
 
 export {arrowPressed, nextLevelBtnPressed};
